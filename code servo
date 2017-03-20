@@ -1,0 +1,67 @@
+// deux boutons poussoirs + et -
+// commander un servo-moteur
+ 
+#include <Servo.h>
+    
+Servo myservo; // un objet de type servo est crée (servomoteur)
+ 
+ 
+int boutonMoins = 4;  // reliée au bouton poussoir "-"
+ 
+int boutonPlus = 3 ;  //  reliée au bouton poussoir "+"
+ 
+int posmin = 0; // position mini
+ 
+int posmax = 180 ; // position  maxi
+ 
+int posact= 90 ; // position actuelle
+ 
+int appui= 0; // quand un bouton poussoir est appuye il est dans l'état bas 0v
+ 
+ 
+void tourne_plus ()          
+{
+  if ( posact < posmax) {    
+      posact = posact + 1;   
+      myservo.write(posact);      
+      delay(50); // attendre 50 ms après chaque changement
+    }     
+}   
+     
+void tourne_moins ()          
+{
+  if ( posact > posmin) {    
+      posact = posact - 1;   
+      myservo.write(posact);      
+      delay(50); // attendre 50 ms après chaque changement
+    }     
+}    
+     
+  
+void setup() // executée une seule fois
+ 
+{
+     
+    myservo.attach(9); // attache le servo à la pin 9
+     
+    pinMode(boutonMoins, INPUT);    // Pin en mode entrée  
+      
+    pinMode(boutonPlus, INPUT);    // Pin en mode entrée       
+           
+    Serial.begin(19200);   
+       
+}
+ 
+ 
+void loop() // executée en boucle
+{
+            
+ if (digitalRead(boutonMoins) == appui) { // appui sur le bouton poussoir    
+    Serial.print("appui sur BP moins ! ");    
+    tourne_moins();
+    }
+     
+  if (digitalRead(boutonPlus) == appui) { // appui sur le bouton poussoir 
+    Serial.print("appui sur BP plus ! ");
+    tourne_plus();    
+    }       
